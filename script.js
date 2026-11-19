@@ -36,8 +36,8 @@ const copy = {
     cardKicker: "request the pleasure of your company<br>at the wedding celebrations of",
     sonOf: "Son of",
     daughterOf: "Daughter of",
-    groomParents: "Smt. Jagruti & Shri Jaiwant Vasudev Toraskar",
-    brideParents: "Smt. Sujata & Shri Suresh Dhondhu Phanse",
+    groomParents: "Mrs. Jagruti & Mr. Jaiwant Vasudev Toraskar",
+    brideParents: "Mrs. Sujata & Mr. Suresh Dhondhu Phanse",
     cardWhere: "Country Club Holidays · Andheri West",
     cardNote: "We humbly request you and your family to join us and bless the couple.",
     joinScript: "Join us",
@@ -91,7 +91,9 @@ const copy = {
     footer: "Made with love for Pranay & Supriya · 2026",
     backTop: "Back to top",
     menuOpen: "Open menu",
-    menuClose: "Close menu"
+    menuClose: "Close menu",
+    musicPlay: "Play music",
+    musicMute: "Mute music"
   },
   mr: {
     groomName: "प्रणय",
@@ -175,7 +177,9 @@ const copy = {
     footer: "प्रणय आणि सुप्रिया यांच्यासाठी प्रेमाने · २०२६",
     backTop: "वर जा",
     menuOpen: "मेनू उघडा",
-    menuClose: "मेनू बंद करा"
+    menuClose: "मेनू बंद करा",
+    musicPlay: "संगीत सुरू करा",
+    musicMute: "संगीत बंद करा"
   }
 };
 
@@ -230,6 +234,11 @@ function applyLang(next) {
       el.setAttribute("aria-label", t(open ? "menuClose" : "menuOpen"));
       return;
     }
+    if (key === "musicPlay") {
+      const playing = el.getAttribute("aria-pressed") === "true";
+      el.setAttribute("aria-label", t(playing ? "musicMute" : "musicPlay"));
+      return;
+    }
     el.setAttribute("aria-label", t(key));
   });
   document.querySelectorAll(".lang button").forEach(btn => {
@@ -277,6 +286,8 @@ function openLetter() {
   mail.classList.add("is-open");
   document.body.classList.add("is-opening");
   $("#open-letter").setAttribute("aria-expanded", "true");
+  musicWanted = true;
+  startMusic();
 
   later(() => document.body.classList.add("is-card-flight"), 360);
   later(() => document.body.classList.add("is-reveal-fade"), 1680);
@@ -284,11 +295,71 @@ function openLetter() {
     document.body.classList.remove("is-sealed", "is-opening", "is-card-flight", "is-reveal-fade");
     document.body.classList.add("is-revealed");
     setupScratch();
+    if (musicWanted && bgMusic && bgMusic.paused) startMusic();
     const home = $("#home");
     if (home) home.scrollIntoView({ behavior: "auto", block: "start" });
   }, 2080);
 }
 $("#open-letter").addEventListener("click", openLetter);
+
+const bgMusic = $("#bg-music");
+const musicBtn = $("#music-toggle");
+const MUSIC_VOL = 0.45;
+let musicWanted = true;
+let fadeTimer = 0;
+
+function setMusicUi(playing) {
+  if (!musicBtn) return;
+  musicBtn.classList.toggle("is-muted", !playing);
+  musicBtn.setAttribute("aria-pressed", playing ? "true" : "false");
+  musicBtn.setAttribute("aria-label", t(playing ? "musicMute" : "musicPlay"));
+}
+
+function fadeMusic(to, ms = 900) {
+  if (!bgMusic) return;
+  window.clearInterval(fadeTimer);
+  const from = bgMusic.volume;
+  const steps = Math.max(1, Math.round(ms / 40));
+  let i = 0;
+  fadeTimer = window.setInterval(() => {
+    i += 1;
+    bgMusic.volume = from + (to - from) * (i / steps);
+    if (i >= steps) {
+      window.clearInterval(fadeTimer);
+      bgMusic.volume = to;
+      if (to === 0) {
+        bgMusic.pause();
+        setMusicUi(false);
+      }
+    }
+  }, 40);
+}
+
+function startMusic() {
+  if (!bgMusic || !musicWanted) return;
+  bgMusic.volume = 0;
+  const play = bgMusic.play();
+  if (play && typeof play.then === "function") {
+    play.then(() => {
+      setMusicUi(true);
+      fadeMusic(MUSIC_VOL, 1200);
+    }).catch(() => setMusicUi(false));
+  }
+}
+
+function toggleMusic() {
+  if (!bgMusic) return;
+  if (!bgMusic.paused && bgMusic.volume > 0.02) {
+    musicWanted = false;
+    fadeMusic(0, 500);
+    setMusicUi(false);
+    return;
+  }
+  musicWanted = true;
+  startMusic();
+}
+
+if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
 
 let scratchReady = false;
 let scratchStarted = false;

@@ -1,9 +1,17 @@
 const VIVAH = new Date("2026-12-13T17:55:00+05:30");
-const WISH_KEY = "ps-wishes";
 const LANG_KEY = "ps-lang";
+const WISH_API = (() => {
+  const host = location.hostname;
+  if (host === "127.0.0.1" || host === "localhost") {
+    return "https://wedding-invitation.toraskar-pranay.workers.dev/api/wishes";
+  }
+  return "/api/wishes";
+})();
 
 const copy = {
   en: {
+    groomName: "Pranay",
+    brideName: "Supriya",
     weds: "weds",
     navHome: "Home",
     navInvite: "Invitation",
@@ -13,28 +21,24 @@ const copy = {
     ganesha: "✦   With the blessings of Lord Ganesha   ✦",
     ganeshaPlain: "With the blessings of Lord Ganesha",
     together: "Together with their families",
-    heroDate: "Sunday · 13 December 2026",
-    heroMeta: "Wedding muhurat · 5:55 PM · Mumbai",
     openLetter: "Open the letter",
     seeEvents: "See the celebrations",
     scroll: "Scroll",
-    scrollMore: "Scroll for the celebrations",
-    scratchHint: "Scratch the date",
+    scratchHint: "Scratch to reveal the date",
     dateHidden: "Scratch the letter for the date",
     muhuratLabel: "Wedding muhurat",
     muhuratTime: "5:55 PM",
     closeDateHidden: "Mumbai",
-    inviteScript: "Shubh Vivah",
-    inviteTitle: "You are invited",
-    inviteLede: "With joy in our hearts, and the blessings of our elders, we request the honour of your presence.",
     letterHint: "Tap the seal to open",
+    inviteScript: "Shubh Vivah",
+    inviteTitle: "You Are Invited",
+    inviteLede: "With joy in our hearts, we request the honour of your presence",
     cardKicker: "request the pleasure of your company<br>at the wedding celebrations of",
     sonOf: "Son of",
     daughterOf: "Daughter of",
-    groomParents: "Smt. Jagruti & Shri Jaywant Vasudev Toraskar",
+    groomParents: "Smt. Jagruti & Shri Jaiwant Vasudev Toraskar",
     brideParents: "Smt. Sujata & Shri Suresh Dhondhu Phanse",
-    cardWhen: "Sunday, 13 December 2026 · Muhurat 5:55 PM",
-    cardWhere: "Country Club · Andheri West · Mumbai",
+    cardWhere: "Country Club Holidays · Andheri West",
     cardNote: "We humbly request you and your family to join us and bless the couple.",
     joinScript: "Join us",
     eventsTitle: "Event details",
@@ -43,27 +47,25 @@ const copy = {
     haldiTitle: "Haldi Ceremony",
     haldiSub: "The pre-wedding celebration",
     haldiDate: "Friday, 11 December 2026",
-    haldiTime: "7:00 PM – 9:00 PM",
-    venueSoon: "Venue to be shared",
+    haldiTime: "7:00 PM – 10:00 PM",
+    haldiVenue: "Sachinam Heights<br>Javji Dadaji Road, Grant Road (W)<br>Opp. Bhatia Hospital<br>Mumbai 400007",
     haldiQuote: "“A golden beginning to our forever.”",
     addCal: "Add to calendar",
     mumbai: "Mumbai",
     weddingTitle: "Wedding Ceremony",
     weddingSub: "The wedding muhurat",
     weddingDate: "Sunday, 13 December 2026",
-    weddingTime: "Wedding muhurat · 5:55 PM",
-    venueFull: "Country Club<br>Veera Desai Road<br>Opposite Kiya Park Building<br>Prathamesh Complex, Andheri West<br>Mumbai 400053",
+    venueFull: "Country Club Holidays Pvt. Ltd.<br>Veera Desai Road<br>Opposite Kiya Park Building<br>Prathamesh Complex, Andheri West 400053",
     weddingQuote: "“Seven steps, seven promises, one beautiful journey.”",
     directions: "Get directions",
     dinnerTitle: "Welcome Dinner",
     dinnerSub: "Dinner and welcome",
-    dinnerTime: "6:00 PM – 9:00 PM",
-    venueShort: "Country Club, Andheri West, Mumbai 400053",
+    dinnerTime: "7:00 PM – 10:00 PM",
+    venueShort: "Country Club Holidays Pvt. Ltd., Andheri West 400053",
     dinnerQuote: "“Your presence will make our celebration complete.”",
     countScript: "Counting down",
     countTitle: "Until we say forever",
     countLede: "To the wedding day.",
-    clockWhen: "Sunday, 13 December 2026 · 5:55 PM",
     countLabel: "Countdown to the wedding",
     days: "Days",
     hours: "Hours",
@@ -77,7 +79,9 @@ const copy = {
     namePh: "Your name",
     wishPh: "Write your blessing…",
     sendWish: "Send blessing",
-    wishNote: "Wishes are saved on this device only.",
+    wishNote: "Blessings are shared with everyone on the live invitation.",
+    wishSending: "Sending your blessing…",
+    wishError: "Could not save right now. Please try again.",
     emptyWish: "Be the first to bless Pranay & Supriya.",
     closeBless: "Shubhamangal Savadhan",
     closeLead: "Your presence and blessings are the most precious gifts.",
@@ -90,6 +94,8 @@ const copy = {
     menuClose: "Close menu"
   },
   mr: {
+    groomName: "प्रणय",
+    brideName: "सुप्रिया",
     weds: "विवाह",
     navHome: "मुख्य",
     navInvite: "निमंत्रण",
@@ -99,28 +105,24 @@ const copy = {
     ganesha: "✦   ॥ श्री गणेशाय नमः ॥   ✦",
     ganeshaPlain: "॥ श्री गणेशाय नमः ॥",
     together: "कुटुंबियांसमवेत",
-    heroDate: "रविवार · १३ डिसेंबर २०२६",
-    heroMeta: "विवाह मुहूर्त · सायंकाळी ५:५५ · मुंबई",
     openLetter: "पत्र उघडा",
     seeEvents: "सोहळे पहा",
     scroll: "खाली पहा",
-    scrollMore: "सोहळ्यांसाठी खाली पहा",
-    scratchHint: "तारीख खरडवा",
+    scratchHint: "तारीख उघडण्यासाठी खरडवा",
     dateHidden: "पत्रावरील तारीख खरडवा",
     muhuratLabel: "विवाह मुहूर्त",
     muhuratTime: "सायं. ५:५५",
     closeDateHidden: "मुंबई",
+    letterHint: "सीलवर टॅप करा",
     inviteScript: "शुभविवाह",
     inviteTitle: "आपण आमंत्रित आहात",
-    inviteLede: "मनापासून आनंदाने आणि वडीलधाऱ्यांच्या आशीर्वादाने, आम्ही आपल्या उपस्थितीची विनंती करतो.",
-    letterHint: "सीलवर टॅप करा",
+    inviteLede: "मनापासून आनंदाने, आम्ही आपल्या उपस्थितीची विनंती करतो",
     cardKicker: "विवाह सोहळ्यात<br>सहकुटुंब उपस्थित राहण्याची विनंती",
     sonOf: "सुपुत्र",
     daughterOf: "सुकन्या",
     groomParents: "सौ. जागृती आणि श्री. जयवंत वासुदेव तोरस्कर",
     brideParents: "सौ. सुजाता आणि श्री. सुरेश धोंडू फणसे",
-    cardWhen: "रविवार, १३ डिसेंबर २०२६ · मुहूर्त सायं. ५:५५",
-    cardWhere: "कंट्री क्लब · अंधेरी पश्चिम · मुंबई",
+    cardWhere: "कंट्री क्लब हॉलिडेझ · अंधेरी पश्चिम",
     cardNote: "आपण सहकुटुंब, सहपरिवार उपस्थित राहून वधू-वरांस शुभाशीर्वाद द्यावेत, ही नम्र विनंती.",
     joinScript: "आमंत्रण",
     eventsTitle: "कार्यक्रम तपशील",
@@ -129,27 +131,25 @@ const copy = {
     haldiTitle: "हळदी समारंभ",
     haldiSub: "विवाहपूर्व सोहळा",
     haldiDate: "शुक्रवार, ११ डिसेंबर २०२६",
-    haldiTime: "सायं. ७:०० ते ९:००",
-    venueSoon: "स्थळ लवकरच कळवण्यात येईल",
+    haldiTime: "सायं. ७:०० ते १०:००",
+    haldiVenue: "सचिनाम हाइट्स<br>जवजी दादाजी रोड, ग्रँट रोड (पश्चिम)<br>भाटिया हॉस्पिटल समोर<br>मुंबई ४००००७",
     haldiQuote: "“आमच्या कायमच्या प्रवासाला सुवर्ण सुरुवात.”",
     addCal: "कॅलेंडरमध्ये जोडा",
     mumbai: "मुंबई",
     weddingTitle: "शुभविवाह",
     weddingSub: "विवाह मुहूर्त",
     weddingDate: "रविवार, १३ डिसेंबर २०२६",
-    weddingTime: "विवाह मुहूर्त · सायं. ५:५५",
-    venueFull: "कंट्री क्लब<br>वीरा देसाई रोड<br>किया पार्क बिल्डिंगच्या समोर<br>प्रथमेश कॉम्प्लेक्स, अंधेरी पश्चिम<br>मुंबई ४०००५३",
+    venueFull: "कंट्री क्लब हॉलिडेझ प्रा. लि.<br>वीरा देसाई रोड<br>किया पार्क बिल्डिंगच्या समोर<br>प्रथमेश कॉम्प्लेक्स, अंधेरी पश्चिम ४०००५३",
     weddingQuote: "“सात फेरे, सात वचने, एक सुंदर प्रवास.”",
     directions: "मार्ग पहा",
     dinnerTitle: "स्नेहभोजन",
     dinnerSub: "स्वागत समारंभ",
-    dinnerTime: "सायं. ६:०० ते ९:००",
-    venueShort: "कंट्री क्लब, अंधेरी पश्चिम, मुंबई ४०००५३",
+    dinnerTime: "सायं. ७:०० ते १०:००",
+    venueShort: "कंट्री क्लब हॉलिडेझ प्रा. लि., अंधेरी पश्चिम ४०००५३",
     dinnerQuote: "“तुमच्या उपस्थितीने आमचा सोहळा परिपूर्ण होईल.”",
     countScript: "प्रतीक्षा",
     countTitle: "कायमचे एकत्र होईपर्यंत",
     countLede: "शुभविवाहाच्या दिवसापर्यंत.",
-    clockWhen: "रविवार, १३ डिसेंबर २०२६ · सायं. ५:५५",
     countLabel: "विवाहापर्यंतची उलटी गिनती",
     days: "दिवस",
     hours: "तास",
@@ -163,7 +163,9 @@ const copy = {
     namePh: "तुमचे नाव",
     wishPh: "आशीर्वाद लिहा…",
     sendWish: "आशीर्वाद पाठवा",
-    wishNote: "शुभेच्छा फक्त या उपकरणावर जतन होतात.",
+    wishNote: "आशीर्वाद सर्व पाहुण्यांना दिसतात.",
+    wishSending: "आशीर्वाद पाठवत आहोत…",
+    wishError: "सध्या जतन करता आले नाही. पुन्हा प्रयत्न करा.",
     emptyWish: "प्रणय आणि सुप्रिया यांना आशीर्वाद देणारे पहिले व्हा.",
     closeBless: "॥ शुभमंगल सावधान ॥",
     closeLead: "तुमची उपस्थिती आणि आशीर्वाद हीच सर्वात मौल्यवान भेट आहे.",
@@ -197,11 +199,11 @@ function parts(target) {
 }
 
 function paintClock(prefix, target) {
-  const t = parts(target);
-  $("#" + prefix + "-days").textContent = String(t.days);
-  $("#" + prefix + "-hours").textContent = String(t.hours).padStart(2, "0");
-  $("#" + prefix + "-minutes").textContent = String(t.minutes).padStart(2, "0");
-  $("#" + prefix + "-seconds").textContent = String(t.seconds).padStart(2, "0");
+  const values = parts(target);
+  $("#" + prefix + "-days").textContent = String(values.days);
+  $("#" + prefix + "-hours").textContent = String(values.hours).padStart(2, "0");
+  $("#" + prefix + "-minutes").textContent = String(values.minutes).padStart(2, "0");
+  $("#" + prefix + "-seconds").textContent = String(values.seconds).padStart(2, "0");
 }
 
 function tick() {
@@ -236,7 +238,7 @@ function applyLang(next) {
     btn.setAttribute("aria-pressed", on ? "true" : "false");
   });
   localStorage.setItem(LANG_KEY, lang);
-  if (typeof renderWishes === "function") renderWishes(false);
+  scratchStarted = false;
   if (typeof paintFoil === "function") paintFoil();
 }
 
@@ -260,20 +262,31 @@ navLinks.addEventListener("click", event => {
 });
 
 const mail = $("#mail");
-let revealTimer = 0;
+const timers = [];
+function later(fn, ms) {
+  const id = window.setTimeout(fn, ms);
+  timers.push(id);
+  return id;
+}
+function clearTimers() {
+  while (timers.length) window.clearTimeout(timers.pop());
+}
 function openLetter() {
-  if (mail.classList.contains("is-open")) return;
+  if (mail.classList.contains("is-open") || document.body.classList.contains("is-revealed")) return;
+  clearTimers();
   mail.classList.add("is-open");
   document.body.classList.add("is-opening");
   $("#open-letter").setAttribute("aria-expanded", "true");
-  setupScratch();
-  window.clearTimeout(revealTimer);
-  revealTimer = window.setTimeout(() => {
-    document.body.classList.remove("is-sealed", "is-opening");
+
+  later(() => document.body.classList.add("is-card-flight"), 360);
+  later(() => document.body.classList.add("is-reveal-fade"), 1680);
+  later(() => {
+    document.body.classList.remove("is-sealed", "is-opening", "is-card-flight", "is-reveal-fade");
     document.body.classList.add("is-revealed");
     setupScratch();
-    window.scrollTo(0, 0);
-  }, 1400);
+    const home = $("#home");
+    if (home) home.scrollIntoView({ behavior: "auto", block: "start" });
+  }, 2080);
 }
 $("#open-letter").addEventListener("click", openLetter);
 
@@ -299,7 +312,7 @@ function setupScratch() {
     g.addColorStop(1, "#f3e2c0");
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = "rgba(110, 36, 56, .16)";
+    ctx.strokeStyle = "rgba(92, 33, 64, .16)";
     ctx.lineWidth = 2;
     for (let x = -h; x < w + h; x += 12) {
       ctx.beginPath();
@@ -307,12 +320,40 @@ function setupScratch() {
       ctx.lineTo(x + h * 0.55, h);
       ctx.stroke();
     }
-    ctx.fillStyle = "#6e2438";
-    ctx.font = "600 12px Outfit, sans-serif";
+    ctx.fillStyle = "#5c2140";
+    ctx.font = lang === "mr"
+      ? "600 13px \"Noto Serif Devanagari\", serif"
+      : "600 11px Outfit, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     const label = lang === "en" ? t("scratchHint").toUpperCase() : t("scratchHint");
-    ctx.fillText(label, w / 2, h / 2);
+    function wrapLine(text, maxWidth) {
+      if (ctx.measureText(text).width <= maxWidth) return [text];
+      const chars = [...text];
+      const lines = [];
+      let line = "";
+      chars.forEach(ch => {
+        const next = line + ch;
+        if (ctx.measureText(next).width > maxWidth && line) {
+          lines.push(line);
+          line = ch;
+        } else {
+          line = next;
+        }
+      });
+      if (line) lines.push(line);
+      return lines.slice(0, 2);
+    }
+    const lines = lang === "en"
+      ? (() => {
+          const words = label.split(" ");
+          return words.length > 3
+            ? [words.slice(0, 3).join(" "), words.slice(3).join(" ")]
+            : [label];
+        })()
+      : wrapLine(label, w - 28);
+    const startY = h / 2 - ((lines.length - 1) * 9);
+    lines.forEach((line, index) => ctx.fillText(line, w / 2, startY + index * 18));
   }
 
   function size() {
@@ -362,9 +403,10 @@ function setupScratch() {
   }
   function finish() {
     if (box.classList.contains("is-done")) return;
-    box.classList.add("is-done");
+    box.classList.add("is-done", "is-surprise");
     document.body.classList.add("date-known");
     drawing = false;
+    window.setTimeout(() => box.classList.remove("is-surprise"), 1400);
   }
   canvas.addEventListener("pointerdown", event => {
     if (box.classList.contains("is-done")) return;
@@ -402,24 +444,42 @@ const spy = new IntersectionObserver(entries => {
 }, { rootMargin: "-40% 0px -50% 0px" });
 spySections.forEach(section => spy.observe(section));
 
-function loadWishes() {
+const wall = $("#wish-wall");
+const wishStatus = $("#wish-status");
+const wideQuery = window.matchMedia("(min-width: 641px)");
+let wishCache = [];
+
+function setWishNote(key) {
+  if (!wishStatus) return;
+  wishStatus.textContent = t(key);
+}
+
+async function loadWishes() {
   try {
-    const list = JSON.parse(localStorage.getItem(WISH_KEY) || "[]");
-    return Array.isArray(list) ? list : [];
+    const res = await fetch(WISH_API, { headers: { Accept: "application/json" } });
+    if (!res.ok) throw new Error("bad status");
+    const list = await res.json();
+    wishCache = Array.isArray(list) ? list : [];
+    return wishCache;
   } catch {
-    return [];
+    return wishCache;
   }
 }
 
-function saveWishes(list) {
-  localStorage.setItem(WISH_KEY, JSON.stringify(list));
+async function saveWish(entry) {
+  const res = await fetch(WISH_API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(entry)
+  });
+  if (!res.ok) throw new Error("save failed");
+  const list = await res.json();
+  wishCache = Array.isArray(list) ? list : wishCache;
+  return wishCache;
 }
 
-const wall = $("#wish-wall");
-const wideQuery = window.matchMedia("(min-width: 641px)");
-
 function renderWishes(popLast) {
-  const list = loadWishes().slice(-18).reverse();
+  const list = wishCache.slice(-40).reverse();
   wall.innerHTML = "";
   wall.style.minHeight = "";
   wall.classList.toggle("has-notes", list.length > 0);
@@ -498,24 +558,36 @@ const wishInput = $("#guest-wish");
 const wishBtn = $("#wish-btn");
 
 function syncWishButton() {
-  wishBtn.disabled = !nameInput.value.trim() || !wishInput.value.trim();
+  wishBtn.disabled = !nameInput.value.trim() || !wishInput.value.trim() || wishBtn.dataset.busy === "1";
 }
 nameInput.addEventListener("input", syncWishButton);
 wishInput.addEventListener("input", syncWishButton);
 
-form.addEventListener("submit", event => {
+form.addEventListener("submit", async event => {
   event.preventDefault();
   const name = nameInput.value.trim();
   const text = wishInput.value.trim();
   if (!name || !text) return;
-  const list = loadWishes();
-  list.push({ name, text });
-  saveWishes(list);
-  form.reset();
+  wishBtn.dataset.busy = "1";
   syncWishButton();
-  renderWishes(true);
+  setWishNote("wishSending");
+  try {
+    await saveWish({ name, text });
+    form.reset();
+    renderWishes(true);
+    setWishNote("wishNote");
+  } catch {
+    setWishNote("wishError");
+  } finally {
+    wishBtn.dataset.busy = "0";
+    syncWishButton();
+  }
 });
 
 applyLang(localStorage.getItem(LANG_KEY) || "en");
 setupScratch();
 wideQuery.addEventListener("change", () => renderWishes(false));
+loadWishes().then(() => renderWishes(false));
+setInterval(() => {
+  loadWishes().then(() => renderWishes(false));
+}, 30000);

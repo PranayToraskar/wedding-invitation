@@ -12,6 +12,7 @@ const copy = {
   en: {
     groomName: "Pranay",
     brideName: "Supriya",
+    coupleAnd: "&",
     weds: "weds",
     navHome: "Home",
     navInvite: "Invitation",
@@ -45,10 +46,13 @@ const copy = {
     eventsLede: "A little turmeric, a lifetime of togetherness, and an evening filled with blessings.",
     preWedding: "Pre-wedding",
     haldiTitle: "Haldi Ceremony",
+    haldiGroomSub: "Groom's side",
+    haldiBrideSub: "Bride's side",
     haldiSub: "The pre-wedding celebration",
     haldiDate: "Friday, 11 December 2026",
     haldiTime: "7:00 PM – 10:00 PM",
     haldiVenue: "Sachinam Heights<br>Javji Dadaji Road, Grant Road (W)<br>Opp. Bhatia Hospital<br>Mumbai 400007",
+    haldiBrideVenue: "A-wing, Saraswati Baug 2<br>Old Viva College Rd<br>Virar West<br>Maharashtra 401303",
     haldiQuote: "“A golden beginning to our forever.”",
     addCal: "Add to calendar",
     mumbai: "Mumbai",
@@ -98,6 +102,7 @@ const copy = {
   mr: {
     groomName: "प्रणय",
     brideName: "सुप्रिया",
+    coupleAnd: "आणि",
     weds: "विवाह",
     navHome: "मुख्य",
     navInvite: "निमंत्रण",
@@ -131,10 +136,13 @@ const copy = {
     eventsLede: "थोडी हळद, आयुष्यभर साथ, आणि आशीर्वादांनी नटलेली संध्याकाळ.",
     preWedding: "विवाहपूर्व",
     haldiTitle: "हळदी समारंभ",
+    haldiGroomSub: "वरपक्ष",
+    haldiBrideSub: "वधूपक्ष",
     haldiSub: "विवाहपूर्व सोहळा",
     haldiDate: "शुक्रवार, ११ डिसेंबर २०२६",
     haldiTime: "सायं. ७:०० ते १०:००",
     haldiVenue: "सचिनाम हाइट्स<br>जवजी दादाजी रोड, ग्रँट रोड (पश्चिम)<br>भाटिया हॉस्पिटल समोर<br>मुंबई ४००००७",
+    haldiBrideVenue: "ए-विंग, सरस्वती बाग २<br>ओल्ड विवा कॉलेज रोड<br>विरार पश्चिम<br>महाराष्ट्र ४०१३०३",
     haldiQuote: "“आमच्या कायमच्या प्रवासाला सुवर्ण सुरुवात.”",
     addCal: "कॅलेंडरमध्ये जोडा",
     mumbai: "मुंबई",
@@ -182,6 +190,12 @@ const copy = {
     musicMute: "संगीत बंद करा"
   }
 };
+
+const guestSide = (() => {
+  const side = new URLSearchParams(location.search).get("side");
+  return side && side.toLowerCase() === "bride" ? "bride" : "groom";
+})();
+document.body.dataset.side = guestSide;
 
 let lang = "en";
 function t(key) {

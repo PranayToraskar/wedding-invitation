@@ -1270,6 +1270,11 @@ body.date-known .scratch-hint-label { display: none; }
   text-align: center;
   transition: transform .25s ease;
 }
+.event[data-side="bride"] { display: none; }
+body[data-side="bride"] .event[data-side="bride"] { display: flex; }
+body[data-side="bride"] .event[data-side="groom"] { display: none; }
+body[data-side="groom"] .event[data-side="groom"] { display: flex; }
+body[data-side="groom"] .event[data-side="bride"] { display: none; }
 .event:hover { transform: translateY(-6px); }
 .event.featured {
   transform: translateY(-18px);
@@ -1613,6 +1618,13 @@ html[lang="mr"] .close-names,
 html[lang="mr"] .event h3,
 html[lang="mr"] .clock h3 {
   font-family: var(--deva);
+}
+html[lang="mr"] .amp,
+html[lang="mr"] .close-names em {
+  font-family: var(--deva);
+  font-size: .28em;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 @media (max-width: 640px) {
   .lang { margin-right: 8px; }
